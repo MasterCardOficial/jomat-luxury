@@ -1287,7 +1287,7 @@ function Navbar({ isDarkMode, setIsDarkMode, favorites, cartCount, setIsCartOpen
                                                 Limpiar
                                             </button>
                                         </div>
-                                        {searchHistory.slice(0, 5).map((query: string, idx) => (
+                                        {searchHistory.slice(0, 5).map((query: string, idx: number) => (
                                             <button
                                                 key={idx}
                                                 onClick={() => {
@@ -5590,5 +5590,6 @@ function PolicyPage({ type, isDarkMode }: { type: 'terms' | 'privacy' | 'warrant
         </div>
     );
 }
+
 
 
