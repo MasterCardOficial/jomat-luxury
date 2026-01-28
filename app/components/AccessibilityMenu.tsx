@@ -107,9 +107,9 @@ export default function AccessibilityMenu({ isGlobalDarkMode, toggleGlobalDarkMo
                 whileHover={{ scale: 1.1 }}
                 whileTap={{ scale: 0.9 }}
                 onClick={() => setIsOpen(!isOpen)}
-                className="fixed bottom-28 left-8 z-[60] w-14 h-14 bg-indigo-600 text-white rounded-full flex items-center justify-center shadow-2xl hover:bg-indigo-700 transition-colors"
+                className="fixed bottom-24 md:bottom-28 left-4 md:left-8 z-[60] w-12 h-12 md:w-14 md:h-14 bg-indigo-600 text-white rounded-full flex items-center justify-center shadow-2xl hover:bg-indigo-700 transition-colors"
             >
-                {isOpen ? <X size={24} /> : <Accessibility size={28} />}
+                {isOpen ? <X size={20} className="md:w-6 md:h-6" /> : <Accessibility size={24} className="md:w-7 md:h-7" />}
             </motion.button>
 
             {/* Backdrop */}
@@ -132,7 +132,7 @@ export default function AccessibilityMenu({ isGlobalDarkMode, toggleGlobalDarkMo
                         initial={{ x: -400, opacity: 0 }}
                         animate={{ x: 0, opacity: 1 }}
                         exit={{ x: -400, opacity: 0 }}
-                        className="fixed bottom-48 left-8 z-[60] w-[350px] bg-[#2a1b54] text-white rounded-[2rem] shadow-2xl overflow-hidden border border-indigo-500/30 p-6 font-montserrat"
+                        className="fixed bottom-40 md:bottom-48 left-4 md:left-8 z-[60] w-[calc(100vw-2rem)] max-w-[350px] bg-[#2a1b54] text-white rounded-2xl md:rounded-[2rem] shadow-2xl overflow-hidden border border-indigo-500/30 p-4 md:p-6 font-montserrat"
                     >
                         <div className="flex justify-between items-center mb-6">
                             <div className="flex items-center gap-3">

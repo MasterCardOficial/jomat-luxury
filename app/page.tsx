@@ -6,7 +6,7 @@ import {
     MessageCircle, ArrowUp, Check, Facebook, Instagram, Twitter, Clock, ArrowRight,
     Minus, Plus, Trash2, Gift, Award, Smartphone, Info, ChevronDown, Filter, SlidersHorizontal,
     Users, TrendingUp, AlertTriangle, XCircle, DollarSign, Tag, Quote, MapPin, User, RotateCcw, Sparkles, Lock, Mail, Phone, Youtube, Package,
-    CreditCard, Banknote, Building2, Wallet, Shield, Bell
+    CreditCard, Banknote, Building2, Wallet, Shield, Bell, Home, ShoppingCart
 } from 'lucide-react';
 import { motion, AnimatePresence, useInView, animate, useScroll, useSpring } from 'framer-motion';
 import GlobeMap from './components/GlobeMap';
@@ -1987,25 +1987,25 @@ const ShareWishlist = ({ favorites, isDarkMode }: { favorites: any[], isDarkMode
 // Componente: Banner de Garantías Sticky
 const GuaranteesBanner = ({ isDarkMode }: { isDarkMode: boolean }) => {
     return (
-        <div className={`sticky top-20 z-40 py-3 ${isDarkMode ? 'bg-[#1a1a1a] border-b border-[#D4AF37]/20' : 'bg-[#f5f5f5] border-b border-[#D4AF37]/30'}`}>
-            <div className="max-w-7xl mx-auto px-4 flex flex-wrap justify-center items-center gap-6 text-xs">
-                <div className="flex items-center gap-2">
-                    <ShieldCheck size={16} className="text-[#D4AF37]" />
+        <div className={`sticky top-16 md:top-20 z-40 py-2 md:py-3 ${isDarkMode ? 'bg-[#1a1a1a] border-b border-[#D4AF37]/20' : 'bg-[#f5f5f5] border-b border-[#D4AF37]/30'}`}>
+            <div className="max-w-7xl mx-auto px-2 md:px-4 grid grid-cols-2 md:flex md:flex-wrap justify-center items-center gap-3 md:gap-6 text-[10px] md:text-xs">
+                <div className="flex items-center gap-1.5 md:gap-2">
+                    <ShieldCheck size={14} className="text-[#D4AF37] md:w-4 md:h-4" />
                     <span className={`font-black ${isDarkMode ? 'text-white' : 'text-gray-900'}`}>Garantía 2 años</span>
                 </div>
-                <div className="w-px h-4 bg-[#D4AF37]/30" />
-                <div className="flex items-center gap-2">
-                    <RotateCcw size={16} className="text-[#D4AF37]" />
+                <div className="hidden md:block w-px h-4 bg-[#D4AF37]/30" />
+                <div className="flex items-center gap-1.5 md:gap-2">
+                    <RotateCcw size={14} className="text-[#D4AF37] md:w-4 md:h-4" />
                     <span className={`font-black ${isDarkMode ? 'text-white' : 'text-gray-900'}`}>Devolución 30 días</span>
                 </div>
-                <div className="w-px h-4 bg-[#D4AF37]/30" />
-                <div className="flex items-center gap-2">
-                    <Truck size={16} className="text-[#D4AF37]" />
+                <div className="hidden md:block w-px h-4 bg-[#D4AF37]/30" />
+                <div className="flex items-center gap-1.5 md:gap-2">
+                    <Truck size={14} className="text-[#D4AF37] md:w-4 md:h-4" />
                     <span className={`font-black ${isDarkMode ? 'text-white' : 'text-gray-900'}`}>Envío Gratis Colombia</span>
                 </div>
-                <div className="w-px h-4 bg-[#D4AF37]/30" />
-                <div className="flex items-center gap-2">
-                    <Award size={16} className="text-[#D4AF37]" />
+                <div className="hidden md:block w-px h-4 bg-[#D4AF37]/30" />
+                <div className="flex items-center gap-1.5 md:gap-2">
+                    <Award size={14} className="text-[#D4AF37] md:w-4 md:h-4" />
                     <span className={`font-black ${isDarkMode ? 'text-white' : 'text-gray-900'}`}>100% Original</span>
                 </div>
             </div>
@@ -2198,20 +2198,20 @@ function HeroSection({ navigateTo, isDarkMode }: { navigateTo: (v: string) => vo
 
             <div className="relative z-20 text-center px-4 max-w-4xl">
                 <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 1, delay: 0.5 }}>
-                    <h2 className="text-5xl md:text-7xl font-playfair font-black mb-8 leading-tight tracking-tight drop-shadow-2xl text-white">
+                    <h2 className="text-4xl sm:text-5xl md:text-7xl font-playfair font-black mb-6 md:mb-8 leading-tight tracking-tight drop-shadow-2xl text-white px-4">
                         La Distinción del <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#D4AF37] to-[#F7E7CE]">Tiempo</span><br />
                         y el Arte de la <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#D4AF37] to-[#F7E7CE]">Esencia</span>
                     </h2>
-                    <p className="text-base md:text-xl mb-12 max-w-2xl mx-auto font-bold leading-relaxed text-white drop-shadow-lg">
+                    <p className="text-base md:text-xl mb-8 md:mb-12 max-w-2xl mx-auto font-bold leading-relaxed text-white drop-shadow-lg px-4">
                         Bienvenido a la boutique líder en Colombia de relojería y
                         perfumería de alta gama. Descubre piezas auténticas que definen
                         tu carácter.
                     </p>
-                    <div className="flex flex-col sm:flex-row items-center justify-center gap-6 mt-6">
-                        <motion.button whileHover={{ y: -5, scale: 1.05 }} whileTap={{ scale: 0.95 }} onClick={() => navigateTo('shop')} className="w-full sm:w-auto px-10 py-4 bg-gradient-to-r from-[#D4AF37] to-[#B4941F] text-black font-black uppercase tracking-widest text-xs rounded-xl hover:shadow-[0_0_30px_rgba(212,175,55,0.4)] transition-all transform">
+                    <div className="flex flex-col sm:flex-row items-center justify-center gap-4 md:gap-6 mt-6 px-4 md:px-0">
+                        <motion.button whileHover={{ y: -5, scale: 1.05 }} whileTap={{ scale: 0.95 }} onClick={() => navigateTo('shop')} className="w-full sm:w-auto px-8 md:px-10 py-5 md:py-4 bg-gradient-to-r from-[#D4AF37] to-[#B4941F] text-black font-black uppercase tracking-widest text-sm md:text-xs rounded-xl md:rounded-xl hover:shadow-[0_0_30px_rgba(212,175,55,0.4)] transition-all transform shadow-lg">
                             Ver Catálogo
                         </motion.button>
-                        <motion.button whileHover={{ y: -5, scale: 1.05 }} whileTap={{ scale: 0.95 }} onClick={() => navigateTo('history')} className={`w-full sm:w-auto px-10 py-4 border-2 font-black uppercase tracking-widest text-xs rounded-xl transition-all backdrop-blur-sm ${isDarkMode ? 'border-white/30 text-white hover:bg-white hover:text-black hover:border-white' : 'border-black/30 text-black hover:bg-black hover:text-white hover:border-black'}`}>
+                        <motion.button whileHover={{ y: -5, scale: 1.05 }} whileTap={{ scale: 0.95 }} onClick={() => navigateTo('history')} className={`w-full sm:w-auto px-8 md:px-10 py-5 md:py-4 border-2 font-black uppercase tracking-widest text-sm md:text-xs rounded-xl md:rounded-xl transition-all backdrop-blur-md ${isDarkMode ? 'border-white/30 text-white hover:bg-white hover:text-black hover:border-white' : 'border-black/30 text-black hover:bg-black hover:text-white hover:border-black'}`}>
                             Nuestra Historia
                         </motion.button>
                     </div>
@@ -5560,7 +5560,7 @@ function PolicyPage({ type, isDarkMode }: { type: 'terms' | 'privacy' | 'warrant
     const content = getContent();
 
     return (
-        <div className={`min-h-screen ${isDarkMode ? 'bg-black text-white' : 'bg-white text-black'} transition-colors duration-500`}>
+        <section className={`min-h-screen ${isDarkMode ? 'bg-black text-white' : 'bg-white text-black'} transition-colors duration-500`}>
             <div className="max-w-4xl mx-auto px-6 py-24">
                 <motion.div
                     initial={{ opacity: 0, y: 20 }}
@@ -5571,7 +5571,12 @@ function PolicyPage({ type, isDarkMode }: { type: 'terms' | 'privacy' | 'warrant
                     <div className="w-20 h-1 bg-[#D4AF37] mx-auto"></div>
                 </motion.div>
 
-                <div className={`p-10 md:p-16 rounded-[3.5rem] border ${isDarkMode ? 'bg-white/5 border-white/10' : 'bg-white border-gray-100 shadow-xl shadow-gray-200/50'}`}>
+                <motion.div
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0.2 }}
+                >
+                    <div className={`p-10 md:p-16 rounded-[3.5rem] border ${isDarkMode ? 'bg-white/5 border-white/10' : 'bg-white border-gray-100 shadow-xl shadow-gray-200/50'}`}>
                     <div className="space-y-12">
                         {content.sections.map((section, i) => (
                             <motion.div
@@ -5594,8 +5599,9 @@ function PolicyPage({ type, isDarkMode }: { type: 'terms' | 'privacy' | 'warrant
                             </div>
                         </div>
                     </div>
-                </div>
-            </motion.div>
+                    </div>
+                </motion.div>
+            </div>
         </section>
     );
 }
@@ -5674,11 +5680,6 @@ function BottomNavBar({ view, navigateTo, cartCount, favoritesCount, setIsCartOp
                 })}
             </div>
         </motion.nav>
-    );
-}
-                </div>
-            </div>
-        </div>
     );
 }
 
