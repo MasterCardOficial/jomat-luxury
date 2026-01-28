@@ -1040,7 +1040,7 @@ export default function App() {
             {/* Banner de Garantías Sticky */}
             <GuaranteesBanner isDarkMode={isDarkMode} />
             
-            <main className="pt-20" id="main-content">
+            <main className="pt-16 md:pt-20 pb-20 md:pb-0" id="main-content">
                 {view === 'home' && (
                     <>
                         <HeroSection navigateTo={navigateTo} isDarkMode={isDarkMode} />
@@ -1111,6 +1111,15 @@ export default function App() {
             <MobileMenu isOpen={isMenuOpen} onClose={() => setIsMenuOpen(false)} navigateTo={navigateTo} isDarkMode={isDarkMode} />
             <AnimatePresence>{notifications.map((n, i) => <Notification key={i} message={n} isDarkMode={isDarkMode} />)}</AnimatePresence>
             <AccessibilityMenu isGlobalDarkMode={isDarkMode} toggleGlobalDarkMode={() => setIsDarkMode(!isDarkMode)} />
+            <BottomNavBar 
+                view={view}
+                navigateTo={navigateTo}
+                cartCount={cart.length}
+                favoritesCount={favorites.length}
+                setIsCartOpen={setIsCartOpen}
+                setIsMenuOpen={setIsMenuOpen}
+                isDarkMode={isDarkMode}
+            />
         </div >
     );
 }
@@ -1187,17 +1196,17 @@ function Navbar({ isDarkMode, setIsDarkMode, favorites, cartCount, setIsCartOpen
 
     return (
         <nav className={`fixed top-0 w-full z-50 transition-all duration-300 ${isDarkMode ? 'bg-black/90' : 'bg-white/95'} backdrop-blur-md border-b border-[#D4AF37]/20 shadow-md`}>
-            <div className="max-w-7xl mx-auto px-4 h-20 flex items-center justify-between">
-                <div className="flex items-center gap-4">
-                    <button onClick={() => setIsMenuOpen(true)} className="lg:hidden text-[#D4AF37]"><Menu size={24} /></button>
-                    <div onClick={() => navigateTo('home')} className="cursor-pointer group flex items-center gap-3">
+            <div className="max-w-7xl mx-auto px-4 h-16 md:h-20 flex items-center justify-between">
+                <div className="flex items-center gap-2 md:gap-4">
+                    <button onClick={() => setIsMenuOpen(true)} className="lg:hidden text-[#D4AF37]"><Menu size={20} /></button>
+                    <div onClick={() => navigateTo('home')} className="cursor-pointer group flex items-center gap-2 md:gap-3">
                         <img 
                             src="/jomat_logo.png" 
                             alt="JoMat Luxury Logo" 
-                            className="h-12 w-auto object-contain"
+                            className="h-8 md:h-12 w-auto object-contain"
                         />
-                        <div className="flex flex-col">
-                            <h1 className="text-xl font-playfair font-black tracking-widest text-[#D4AF37]">JOMAT <span className={isDarkMode ? 'text-white' : 'text-black'}>LUXURY</span></h1>
+                        <div className="hidden sm:flex flex-col">
+                            <h1 className="text-lg md:text-xl font-playfair font-black tracking-widest text-[#D4AF37]">JOMAT <span className={isDarkMode ? 'text-white' : 'text-black'}>LUXURY</span></h1>
                             <span className={`text-[7px] tracking-[0.3em] uppercase font-black -mt-1 opacity-60 ${isDarkMode ? 'text-white' : 'text-[#111]'}`}>Tu estilo, tu tiempo, tu aroma.</span>
                         </div>
                     </div>
@@ -1333,7 +1342,7 @@ function Navbar({ isDarkMode, setIsDarkMode, favorites, cartCount, setIsCartOpen
                         <button onClick={() => navigateTo('favorites')} className={`relative hover:text-[#D4AF37] transition-colors ${isDarkMode ? 'text-white' : 'text-[#111]'}`} aria-label={`Favoritos (${favorites.length} productos)`}><Heart size={18} />{favorites.length > 0 && <span className="absolute -top-2 -right-2 bg-red-600 text-white text-[9px] w-3.5 h-3.5 rounded-full flex items-center justify-center font-black">{favorites.length}</span>}</button>
                     </Tooltip>
                     <Tooltip text="Ver Carrito">
-                        <button onClick={() => setIsCartOpen(true)} className="relative bg-[#D4AF37] p-2.5 rounded-xl text-black hover:scale-110 transition-transform shadow-lg shadow-[#D4AF37]/30" aria-label={`Carrito de compras (${cartCount} productos)`}>
+                        <button onClick={() => setIsCartOpen(true)} className="hidden md:block relative bg-[#D4AF37] p-2.5 rounded-xl text-black hover:scale-110 transition-transform shadow-lg shadow-[#D4AF37]/30" aria-label={`Carrito de compras (${cartCount} productos)`}>
                             <ShoppingBag size={18} />{cartCount > 0 && <span className={`absolute -top-2 -right-2 text-[9px] font-black w-4.5 h-4.5 rounded-full flex items-center justify-center border-2 ${isDarkMode ? 'bg-white text-black border-[#D4AF37]' : 'bg-black text-white border-white'}`}>{cartCount}</span>}
                         </button>
                     </Tooltip>
@@ -5586,10 +5595,93 @@ function PolicyPage({ type, isDarkMode }: { type: 'terms' | 'privacy' | 'warrant
                         </div>
                     </div>
                 </div>
+            </motion.div>
+        </section>
+    );
+}
+
+function BottomNavBar({ view, navigateTo, cartCount, favoritesCount, setIsCartOpen, setIsMenuOpen, isDarkMode }: any) {
+    const navItems = [
+        { id: 'home', icon: Home, label: 'Inicio' },
+        { id: 'shop', icon: Search, label: 'Buscar' },
+        { id: 'cart', icon: ShoppingCart, label: 'Carrito', badge: cartCount },
+        { id: 'favorites', icon: Heart, label: 'Favoritos', badge: favoritesCount },
+        { id: 'menu', icon: Menu, label: 'Menú' },
+    ];
+
+    const handleNavClick = (item: any) => {
+        if (item.id === 'cart') {
+            setIsCartOpen(true);
+        } else if (item.id === 'menu') {
+            setIsMenuOpen(true);
+        } else {
+            navigateTo(item.id);
+        }
+    };
+
+    return (
+        <motion.nav 
+            initial={{ y: 100 }}
+            animate={{ y: 0 }}
+            className={`md:hidden fixed bottom-0 left-0 right-0 z-50 border-t transition-all backdrop-blur-xl ${
+                isDarkMode 
+                    ? 'bg-black/95 border-white/10' 
+                    : 'bg-white/95 border-gray-200'
+            }`}
+            style={{ paddingBottom: 'env(safe-area-inset-bottom)' }}
+        >
+            <div className="flex items-center justify-around h-16 px-2">
+                {navItems.map((item) => {
+                    const Icon = item.icon;
+                    const isActive = view === item.id;
+                    
+                    return (
+                        <motion.button
+                            key={item.id}
+                            onClick={() => handleNavClick(item)}
+                            className="relative flex flex-col items-center justify-center gap-1 px-4 py-2 min-w-[64px]"
+                            whileTap={{ scale: 0.9 }}
+                        >
+                            <div className="relative">
+                                <Icon 
+                                    size={22} 
+                                    className={`transition-all ${
+                                        isActive 
+                                            ? 'text-[#D4AF37]' 
+                                            : isDarkMode ? 'text-gray-400' : 'text-gray-600'
+                                    }`}
+                                    fill={isActive && (item.id === 'favorites' || item.id === 'cart') ? '#D4AF37' : 'none'}
+                                />
+                                {item.badge > 0 && (
+                                    <motion.div
+                                        initial={{ scale: 0 }}
+                                        animate={{ scale: 1 }}
+                                        className="absolute -top-1 -right-1 bg-red-500 text-white text-[9px] font-black w-4 h-4 rounded-full flex items-center justify-center"
+                                    >
+                                        {item.badge > 9 ? '9+' : item.badge}
+                                    </motion.div>
+                                )}
+                            </div>
+                            <span className={`text-[9px] font-bold uppercase tracking-wider ${
+                                isActive 
+                                    ? 'text-[#D4AF37]' 
+                                    : isDarkMode ? 'text-gray-400' : 'text-gray-600'
+                            }`}>
+                                {item.label}
+                            </span>
+                        </motion.button>
+                    );
+                })}
+            </div>
+        </motion.nav>
+    );
+}
+                </div>
             </div>
         </div>
     );
 }
+
 
 
 
