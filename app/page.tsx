@@ -13,6 +13,9 @@ import GlobeMap from './components/GlobeMap';
 import AccessibilityMenu from './components/AccessibilityMenu';
 import AuthModals from './components/AuthModals';
 
+// Detectar dispositivos móviles para desactivar animaciones pesadas
+const isMobile = typeof window !== 'undefined' && window.innerWidth < 768;
+
 // --- DATA: PRODUCTOS ---
 const PRODUCTS = [
     {
@@ -1111,6 +1114,41 @@ export default function App() {
             <MobileMenu isOpen={isMenuOpen} onClose={() => setIsMenuOpen(false)} navigateTo={navigateTo} isDarkMode={isDarkMode} />
             <AnimatePresence>{notifications.map((n, i) => <Notification key={i} message={n} isDarkMode={isDarkMode} />)}</AnimatePresence>
             <AccessibilityMenu isGlobalDarkMode={isDarkMode} toggleGlobalDarkMode={() => setIsDarkMode(!isDarkMode)} />
+            
+            {/* Botón Flotante de WhatsApp */}
+            <motion.a
+                href="https://wa.me/573046661245?text=Hola%20JoMat%20Luxury!%20Necesito%20asesoría"
+                target="_blank"
+                rel="noopener noreferrer"
+                initial={isMobile ? {} : { scale: 0, rotate: -180 }}
+                animate={isMobile ? {} : { scale: 1, rotate: 0 }}
+                whileHover={isMobile ? {} : { scale: 1.1 }}
+                whileTap={{ scale: 0.9 }}
+                className="fixed bottom-24 md:bottom-6 right-4 md:right-6 z-[60] group"
+                aria-label="Contactar por WhatsApp"
+            >
+                {/* Tooltip */}
+                <div className="absolute bottom-full right-0 mb-3 w-64 bg-white rounded-2xl shadow-2xl p-4 opacity-0 group-hover:opacity-100 transition-all duration-300 pointer-events-none">
+                    <h3 className="text-gray-900 font-semibold text-base mb-1">¿Necesitas ayuda?</h3>
+                    <p className="text-gray-600 text-sm mb-3">Chatea con nosotros por WhatsApp y te atenderemos al instante.</p>
+                    <div className="bg-[#25D366] text-white text-center py-2 px-4 rounded-lg font-medium text-sm">
+                        Iniciar Chat
+                    </div>
+                    <span className="absolute top-full right-6 w-0 h-0 border-l-[8px] border-r-[8px] border-t-[8px] border-transparent border-t-white"></span>
+                </div>
+                
+                <div className="relative w-12 h-12 md:w-14 md:h-14">
+                    <svg viewBox="0 0 48 48" fill="none" className="w-full h-full drop-shadow-2xl">
+                        {/* Círculo verde de fondo */}
+                        <circle cx="24" cy="24" r="24" fill="#25D366"/>
+                        {/* Logo de WhatsApp */}
+                        <path d="M24.0015 11.9996C17.3735 11.9996 12.0015 17.3716 12.0015 23.9996C12.0015 26.1396 12.5775 28.1436 13.5855 29.8776L12.0015 35.9996L18.3255 34.4496C19.9995 35.3556 21.9375 35.8776 24.0015 35.8776C30.6295 35.8776 36.0015 30.5056 36.0015 23.8776C36.0015 17.2496 30.6295 11.8776 24.0015 11.8776V11.9996ZM29.6055 28.5036C29.3535 29.2116 28.1895 29.7996 27.2835 29.9796C26.7135 30.0996 25.9575 30.1856 23.0415 28.9656C19.2975 27.3756 16.9575 23.5056 16.7775 23.2536C16.5975 23.0016 15.2655 21.2316 15.2655 19.3956C15.2655 17.5596 16.1895 16.6656 16.5015 16.3416C16.7535 16.0776 17.1255 15.9816 17.4735 15.9816C17.6055 15.9816 17.7255 15.9876 17.8335 15.9936C18.1455 16.0056 18.3015 16.0236 18.5055 16.4916C18.7575 17.0736 19.3575 18.9096 19.4295 19.0536C19.5015 19.1976 19.5615 19.3836 19.4535 19.6356C19.3575 19.8876 19.2855 20.0016 19.1055 20.2056C18.9255 20.4096 18.7575 20.5596 18.5775 20.7756C18.4095 20.9616 18.2295 21.1596 18.4335 21.4956C18.6375 21.8196 19.3515 22.9596 20.3895 23.8776C21.7335 24.9996 22.8015 25.3776 23.1735 25.5216C23.4255 25.6296 23.7375 25.6056 23.9535 25.3716C24.2295 25.0776 24.5175 24.6096 24.8175 24.1536C25.0215 23.8536 25.2855 23.8176 25.5735 23.9256C25.8615 24.0216 27.6855 24.9216 28.0095 25.0776C28.3215 25.2216 28.5375 25.2936 28.6095 25.4256C28.6815 25.5576 28.6815 26.1396 28.4295 26.8116L29.6055 28.5036Z" fill="white"/>
+                    </svg>
+                    {/* Efecto de pulso */}
+                    <span className="absolute inset-0 rounded-full bg-[#25D366] animate-ping opacity-20"></span>
+                </div>
+            </motion.a>
+
             <BottomNavBar 
                 view={view}
                 navigateTo={navigateTo}
@@ -1141,7 +1179,7 @@ function RecentlyViewedBar({ products, navigateToProduct, isDarkMode, formatPric
                             className="flex-shrink-0 w-48 group cursor-pointer"
                         >
                             <div className="relative aspect-[3/4] rounded-2xl overflow-hidden mb-3 border border-white/5">
-                                <img src={p.image} className="w-full h-full object-cover transition-transform group-hover:scale-110" alt="" />
+                                <img src={p.image} loading="lazy" className="w-full h-full object-cover transition-transform group-hover:scale-110" alt="" />
                                 <div className="absolute inset-0 bg-black/20 group-hover:bg-black/0 transition-all" />
                             </div>
                             <h4 className="text-[9px] font-black uppercase tracking-wider mb-1 line-clamp-1">{p.name}</h4>
@@ -1195,62 +1233,74 @@ function Navbar({ isDarkMode, setIsDarkMode, favorites, cartCount, setIsCartOpen
     };
 
     return (
-        <nav className={`fixed top-0 w-full z-50 transition-all duration-300 ${isDarkMode ? 'bg-black/90' : 'bg-white/95'} backdrop-blur-md border-b border-[#D4AF37]/20 shadow-md`}>
-            <div className="max-w-7xl mx-auto px-4 h-16 md:h-20 flex items-center justify-between">
-                <div className="flex items-center gap-2 md:gap-4">
-                    <button onClick={() => setIsMenuOpen(true)} className="lg:hidden text-[#D4AF37]"><Menu size={20} /></button>
-                    <div onClick={() => navigateTo('home')} className="cursor-pointer group flex items-center gap-2 md:gap-3">
-                        <img 
-                            src="/jomat_logo.png" 
-                            alt="JoMat Luxury Logo" 
-                            className="h-8 md:h-12 w-auto object-contain"
-                        />
-                        <div className="hidden sm:flex flex-col">
-                            <h1 className="text-lg md:text-xl font-playfair font-black tracking-widest text-[#D4AF37]">JOMAT <span className={isDarkMode ? 'text-white' : 'text-black'}>LUXURY</span></h1>
-                            <span className={`text-[7px] tracking-[0.3em] uppercase font-black -mt-1 opacity-60 ${isDarkMode ? 'text-white' : 'text-[#111]'}`}>Tu estilo, tu tiempo, tu aroma.</span>
+        <nav className={`fixed top-0 w-full z-50 transition-all duration-500 ${isDarkMode ? 'bg-[#0a0a0a]' : 'bg-white'} border-b border-[#D4AF37]/20`}>
+            <div className="max-w-7xl mx-auto px-6 lg:px-8">
+                {/* Main Header Row */}
+                <div className="h-20 flex items-center justify-between">
+                    {/* Logo / Brand Section */}
+                    <div className="flex items-center gap-4">
+                        <button onClick={() => setIsMenuOpen(true)} className="lg:hidden text-[#D4AF37] hover:scale-105 transition-transform"><Menu size={24} /></button>
+                        <div onClick={() => navigateTo('home')} className="cursor-pointer group">
+                            <div className="flex flex-col items-start">
+                                <h1 className="font-playfair font-bold text-2xl md:text-[28px] tracking-[0.15em] leading-none">
+                                    <span className="text-[#D4AF37]">JOMAT</span>
+                                </h1>
+                                <h2 className={`font-playfair font-medium text-lg md:text-xl tracking-[0.2em] -mt-0.5 ${isDarkMode ? 'text-white' : 'text-[#1a1a1a]'}`}>
+                                    LUXURY
+                                </h2>
+                                <span className={`text-[8px] md:text-[9px] tracking-[0.25em] uppercase font-medium mt-0.5 ${isDarkMode ? 'text-gray-400' : 'text-gray-500'}`} style={{ fontFamily: 'Inter, Montserrat, sans-serif' }}>
+                                    Tu estilo, tu tiempo, tu aroma.
+                                </span>
+                            </div>
                         </div>
                     </div>
-                </div>
 
+                    {/* Navigation Menu - Center */}
+                    <div className="hidden lg:flex items-center gap-8 xl:gap-10">
+                        {[
+                            { label: 'Inicio', view: 'home' },
+                            { label: 'Catálogo', view: 'shop' },
+                            { label: 'Relojes', view: 'relojes' },
+                            { label: 'Perfumes', view: 'perfumes' },
+                            { label: 'Ofertas', view: 'ofertas' }
+                        ].map((item) => (
+                            <button 
+                                key={item.label} 
+                                onClick={() => navigateTo(item.view)} 
+                                className={`text-[13px] font-medium tracking-[0.08em] transition-all duration-300 relative group ${isDarkMode ? 'text-gray-300 hover:text-[#D4AF37]' : 'text-gray-700 hover:text-[#D4AF37]'}`}
+                                style={{ fontFamily: 'Inter, Montserrat, sans-serif' }}
+                            >
+                                {item.label}
+                                <span className="absolute -bottom-1 left-0 w-0 h-[1px] bg-[#D4AF37] transition-all duration-300 group-hover:w-full"></span>
+                            </button>
+                        ))}
+                    </div>
 
-
-                <div className="hidden lg:flex items-center gap-10 text-[10px] font-black uppercase tracking-[0.2em]">
-                    {[
-                        { label: 'Inicio', view: 'home' },
-                        { label: 'Catálogo', view: 'shop' },
-                        { label: 'Relojes', view: 'relojes' },
-                        { label: 'Perfumes', view: 'perfumes' },
-                        { label: 'Ofertas', view: 'ofertas' }
-                    ].map((item) => (
-                        <button key={item.label} onClick={() => navigateTo(item.view)} className={`hover:text-[#D4AF37] transition-all relative group ${isDarkMode ? 'text-white' : 'text-[#111]'}`}>
-                            {item.label}
-                            <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-[#D4AF37] transition-all group-hover:w-full"></span>
-                        </button>
-                    ))}
-                </div>
-                <div className="flex items-center gap-3 lg:gap-5">
-                    {/* Buscador con Historial */}
-                    <div className="relative hidden md:block">
-                        <div className="relative">
-                            <input
-                                type="text"
-                                value={searchQuery}
-                                onChange={(e) => handleSearch(e.target.value)}
-                                onFocus={() => setIsSearchFocused(true)}
-                                onBlur={() => setTimeout(() => setIsSearchFocused(false), 200)}
-                                placeholder="Buscar productos..."
-                                className={`w-64 px-4 py-2 pl-10 pr-10 rounded-lg text-sm outline-none transition-all ${isDarkMode ? 'bg-white/5 border border-white/10 text-white placeholder-gray-500 focus:border-[#D4AF37]' : 'bg-gray-100 border border-gray-200 text-black placeholder-gray-400 focus:border-[#D4AF37]'}`}
-                            />
-                            <Search size={16} className={`absolute left-3 top-1/2 -translate-y-1/2 ${isDarkMode ? 'text-gray-500' : 'text-gray-400'}`} />
-                            {searchQuery && (
-                                <button
-                                    onClick={() => setSearchQuery('')}
-                                    className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-[#D4AF37]"
-                                >
-                                    <X size={14} />
-                                </button>
-                            )}
-                        </div>
+                    {/* Right Section - Search & Icons */}
+                    <div className="flex items-center gap-5 lg:gap-6">
+                        {/* Search Bar */}
+                        <div className="relative hidden md:block">
+                            <div className="relative">
+                                <input
+                                    type="text"
+                                    value={searchQuery}
+                                    onChange={(e) => handleSearch(e.target.value)}
+                                    onFocus={() => setIsSearchFocused(true)}
+                                    onBlur={() => setTimeout(() => setIsSearchFocused(false), 200)}
+                                    placeholder="Buscar productos..."
+                                    className={`w-48 lg:w-56 px-4 py-2.5 pl-10 pr-10 rounded-full text-sm outline-none transition-all duration-300 ${isDarkMode ? 'bg-white/5 border border-white/10 text-white placeholder-gray-500 focus:border-[#D4AF37]/50 focus:bg-white/10' : 'bg-gray-50 border border-gray-200 text-black placeholder-gray-400 focus:border-[#D4AF37]/50'}`}
+                                    style={{ fontFamily: 'Inter, sans-serif' }}
+                                />
+                                <Search size={16} className={`absolute left-3.5 top-1/2 -translate-y-1/2 ${isDarkMode ? 'text-gray-500' : 'text-gray-400'}`} />
+                                {searchQuery && (
+                                    <button
+                                        onClick={() => setSearchQuery('')}
+                                        className="absolute right-3.5 top-1/2 -translate-y-1/2 text-gray-400 hover:text-[#D4AF37] transition-colors"
+                                    >
+                                        <X size={14} />
+                                    </button>
+                                )}
+                            </div>
 
                         {/* Dropdown con Resultados y Historial */}
                         {isSearchFocused && (
@@ -1319,33 +1369,99 @@ function Navbar({ isDarkMode, setIsDarkMode, favorites, cartCount, setIsCartOpen
                         )}
                     </div>
 
-                    <Tooltip text={isDarkMode ? "Modo Claro" : "Modo Oscuro"}>
-                        <button onClick={() => setIsDarkMode(!isDarkMode)} className={`hover:text-[#D4AF37] transition-colors ${isDarkMode ? 'text-white' : 'text-[#111]'}`} aria-label={isDarkMode ? "Cambiar a modo claro" : "Cambiar a modo oscuro"}><Zap size={18} fill={isDarkMode ? "currentColor" : "none"} /></button>
-                    </Tooltip>
-                    <Tooltip text="Rastrear Pedido">
-                        <button onClick={() => navigateTo('tracking')} className={`hover:text-[#D4AF37] transition-colors ${isDarkMode ? 'text-white' : 'text-[#111]'}`} aria-label="Rastrear mi pedido"><MapPin size={18} /></button>
-                    </Tooltip>
-                    <Tooltip text="Visto Recientemente">
-                        <button onClick={() => navigateTo('history')} className={`hover:text-[#D4AF37] transition-colors ${isDarkMode ? 'text-white' : 'text-[#111]'}`} aria-label="Ver historial de productos"><Clock size={18} /></button>
-                    </Tooltip>
-                    <Tooltip text={isLoggedIn ? "Cerrar Sesión VIP" : "Socio JoMat (Ingresar)"}>
-                        <button
-                            onClick={isLoggedIn ? onLogout : onAuthClick}
-                            className={`hover:text-[#D4AF37] transition-colors ${isDarkMode ? 'text-white' : 'text-[#111]'} flex items-center gap-2`}
-                            aria-label={isLoggedIn ? "Cerrar sesión" : "Iniciar sesión"}
-                        >
-                            <User size={18} className={isLoggedIn ? "text-[#D4AF37]" : ""} />
-                            {isLoggedIn && <span className="hidden xl:inline text-[9px] font-black uppercase text-[#D4AF37]">Cerrar Sesión</span>}
-                        </button>
-                    </Tooltip>
-                    <Tooltip text="Mis Favoritos">
-                        <button onClick={() => navigateTo('favorites')} className={`relative hover:text-[#D4AF37] transition-colors ${isDarkMode ? 'text-white' : 'text-[#111]'}`} aria-label={`Favoritos (${favorites.length} productos)`}><Heart size={18} />{favorites.length > 0 && <span className="absolute -top-2 -right-2 bg-red-600 text-white text-[9px] w-3.5 h-3.5 rounded-full flex items-center justify-center font-black">{favorites.length}</span>}</button>
-                    </Tooltip>
-                    <Tooltip text="Ver Carrito">
-                        <button onClick={() => setIsCartOpen(true)} className="hidden md:block relative bg-[#D4AF37] p-2.5 rounded-xl text-black hover:scale-110 transition-transform shadow-lg shadow-[#D4AF37]/30" aria-label={`Carrito de compras (${cartCount} productos)`}>
-                            <ShoppingBag size={18} />{cartCount > 0 && <span className={`absolute -top-2 -right-2 text-[9px] font-black w-4.5 h-4.5 rounded-full flex items-center justify-center border-2 ${isDarkMode ? 'bg-white text-black border-[#D4AF37]' : 'bg-black text-white border-white'}`}>{cartCount}</span>}
-                        </button>
-                    </Tooltip>
+                        {/* Icons Row - Premium Hover Animation */}
+                        <div className="flex items-center gap-1">
+                            {/* Modo Oscuro/Claro */}
+                            <div className="group relative flex items-center h-10 overflow-hidden">
+                                <button 
+                                    onClick={() => setIsDarkMode(!isDarkMode)} 
+                                    className={`flex items-center gap-0 group-hover:gap-2 px-2.5 py-2 rounded-full transition-all duration-300 ease-out ${isDarkMode ? 'text-gray-400 group-hover:text-white group-hover:bg-white/5' : 'text-gray-500 group-hover:text-[#1a1a1a] group-hover:bg-black/5'}`}
+                                    aria-label={isDarkMode ? "Cambiar a modo claro" : "Cambiar a modo oscuro"}
+                                >
+                                    <Zap size={18} fill={isDarkMode ? "currentColor" : "none"} className="transition-transform duration-300 group-hover:-translate-x-0.5" />
+                                    <span className="text-[11px] font-medium tracking-wide whitespace-nowrap max-w-0 group-hover:max-w-[80px] overflow-hidden transition-all duration-300 ease-out opacity-0 group-hover:opacity-100 text-[#D4AF37]" style={{ fontFamily: 'Inter, sans-serif' }}>
+                                        {isDarkMode ? 'Claro' : 'Oscuro'}
+                                    </span>
+                                </button>
+                            </div>
+
+                            {/* Rastrear Pedido */}
+                            <div className="group relative flex items-center h-10 overflow-hidden">
+                                <button 
+                                    onClick={() => navigateTo('tracking')} 
+                                    className={`flex items-center gap-0 group-hover:gap-2 px-2.5 py-2 rounded-full transition-all duration-300 ease-out ${isDarkMode ? 'text-gray-400 group-hover:text-white group-hover:bg-white/5' : 'text-gray-500 group-hover:text-[#1a1a1a] group-hover:bg-black/5'}`}
+                                    aria-label="Rastrear mi pedido"
+                                >
+                                    <MapPin size={18} className="transition-transform duration-300 group-hover:-translate-x-0.5" />
+                                    <span className="text-[11px] font-medium tracking-wide whitespace-nowrap max-w-0 group-hover:max-w-[80px] overflow-hidden transition-all duration-300 ease-out opacity-0 group-hover:opacity-100 text-[#D4AF37]" style={{ fontFamily: 'Inter, sans-serif' }}>
+                                        Ubicación
+                                    </span>
+                                </button>
+                            </div>
+
+                            {/* Historial */}
+                            <div className="group relative flex items-center h-10 overflow-hidden">
+                                <button 
+                                    onClick={() => navigateTo('history')} 
+                                    className={`flex items-center gap-0 group-hover:gap-2 px-2.5 py-2 rounded-full transition-all duration-300 ease-out ${isDarkMode ? 'text-gray-400 group-hover:text-white group-hover:bg-white/5' : 'text-gray-500 group-hover:text-[#1a1a1a] group-hover:bg-black/5'}`}
+                                    aria-label="Ver historial de productos"
+                                >
+                                    <Clock size={18} className="transition-transform duration-300 group-hover:-translate-x-0.5" />
+                                    <span className="text-[11px] font-medium tracking-wide whitespace-nowrap max-w-0 group-hover:max-w-[80px] overflow-hidden transition-all duration-300 ease-out opacity-0 group-hover:opacity-100 text-[#D4AF37]" style={{ fontFamily: 'Inter, sans-serif' }}>
+                                        Recientes
+                                    </span>
+                                </button>
+                            </div>
+
+                            {/* Cuenta */}
+                            <div className="group relative flex items-center h-10 overflow-hidden">
+                                <button 
+                                    onClick={isLoggedIn ? onLogout : onAuthClick}
+                                    className={`flex items-center gap-0 group-hover:gap-2 px-2.5 py-2 rounded-full transition-all duration-300 ease-out ${isDarkMode ? 'text-gray-400 group-hover:text-white group-hover:bg-white/5' : 'text-gray-500 group-hover:text-[#1a1a1a] group-hover:bg-black/5'}`}
+                                    aria-label={isLoggedIn ? "Cerrar sesión" : "Iniciar sesión"}
+                                >
+                                    <User size={18} className={`transition-transform duration-300 group-hover:-translate-x-0.5 ${isLoggedIn ? 'text-[#D4AF37]' : ''}`} />
+                                    <span className="text-[11px] font-medium tracking-wide whitespace-nowrap max-w-0 group-hover:max-w-[80px] overflow-hidden transition-all duration-300 ease-out opacity-0 group-hover:opacity-100 text-[#D4AF37]" style={{ fontFamily: 'Inter, sans-serif' }}>
+                                        {isLoggedIn ? 'Salir' : 'Cuenta'}
+                                    </span>
+                                </button>
+                            </div>
+
+                            {/* Favoritos */}
+                            <div className="group relative flex items-center h-10 overflow-hidden">
+                                <button 
+                                    onClick={() => navigateTo('favorites')} 
+                                    className={`relative flex items-center gap-0 group-hover:gap-2 px-2.5 py-2 rounded-full transition-all duration-300 ease-out ${isDarkMode ? 'text-gray-400 group-hover:text-white group-hover:bg-white/5' : 'text-gray-500 group-hover:text-[#1a1a1a] group-hover:bg-black/5'}`}
+                                    aria-label={`Favoritos (${favorites.length} productos)`}
+                                >
+                                    <div className="relative">
+                                        <Heart size={18} className="transition-transform duration-300 group-hover:-translate-x-0.5" />
+                                        {favorites.length > 0 && <span className="absolute -top-1.5 -right-1.5 bg-[#D4AF37] text-black text-[8px] w-3.5 h-3.5 rounded-full flex items-center justify-center font-bold">{favorites.length}</span>}
+                                    </div>
+                                    <span className="text-[11px] font-medium tracking-wide whitespace-nowrap max-w-0 group-hover:max-w-[80px] overflow-hidden transition-all duration-300 ease-out opacity-0 group-hover:opacity-100 text-[#D4AF37]" style={{ fontFamily: 'Inter, sans-serif' }}>
+                                        Favoritos
+                                    </span>
+                                </button>
+                            </div>
+
+                            {/* Carrito - Destacado en dorado */}
+                            <div className="group relative flex items-center h-10 ml-1">
+                                <button 
+                                    onClick={() => setIsCartOpen(true)} 
+                                    className="hidden md:flex items-center gap-0 group-hover:gap-2 bg-[#D4AF37] hover:bg-[#c9a431] px-3 py-2 rounded-xl text-black transition-all duration-300 ease-out shadow-md shadow-[#D4AF37]/20"
+                                    aria-label={`Carrito de compras (${cartCount} productos)`}
+                                >
+                                    <div className="relative">
+                                        <ShoppingBag size={18} className="transition-transform duration-300 group-hover:-translate-x-0.5" />
+                                        {cartCount > 0 && <span className={`absolute -top-2 -right-2 text-[8px] font-bold w-4 h-4 rounded-full flex items-center justify-center ${isDarkMode ? 'bg-white text-black' : 'bg-black text-white'}`}>{cartCount}</span>}
+                                    </div>
+                                    <span className="text-[11px] font-semibold tracking-wide whitespace-nowrap max-w-0 group-hover:max-w-[80px] overflow-hidden transition-all duration-300 ease-out opacity-0 group-hover:opacity-100" style={{ fontFamily: 'Inter, sans-serif' }}>
+                                        Carrito
+                                    </span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </nav>
@@ -1463,7 +1579,7 @@ const ProductGallery360 = ({ images, productName, isDarkMode }: { images: string
                                 : 'border-gray-200 opacity-60 hover:opacity-100 hover:border-[#D4AF37]/50'
                         }`}
                     >
-                        <img src={img} alt={`Vista ${idx + 1}`} className="w-full h-full object-cover" />
+                        <img src={img} loading="lazy" alt={`Vista ${idx + 1}`} className="w-full h-full object-cover" />
                     </button>
                 ))}
             </div>
@@ -1867,7 +1983,7 @@ const SearchAutocomplete = ({ products, navigateToProduct, isDarkMode }: { produ
                                 onClick={() => handleSelect(product)}
                                 className={`w-full p-4 flex items-center gap-4 transition-colors ${isDarkMode ? 'hover:bg-white/5' : 'hover:bg-gray-50'}`}
                             >
-                                <img src={product.image} alt={product.name} className="w-12 h-12 object-cover rounded-lg" />
+                                <img src={product.image} loading="lazy" alt={product.name} className="w-12 h-12 object-cover rounded-lg" />
                                 <div className="flex-1 text-left">
                                     <p className={`font-semibold text-sm ${isDarkMode ? 'text-white' : 'text-gray-900'}`}>{product.name}</p>
                                     <p className={`text-xs ${isDarkMode ? 'text-gray-400' : 'text-gray-600'}`}>{product.brand} · {product.category}</p>
@@ -1986,30 +2102,65 @@ const ShareWishlist = ({ favorites, isDarkMode }: { favorites: any[], isDarkMode
 
 // Componente: Banner de Garantías Sticky
 const GuaranteesBanner = ({ isDarkMode }: { isDarkMode: boolean }) => {
+    const [isVisible, setIsVisible] = useState(true);
+
+    useEffect(() => {
+        let lastScrollY = window.scrollY;
+        
+        const handleScroll = () => {
+            const currentScrollY = window.scrollY;
+            
+            // Si está en la parte superior (menos de 100px), mostrar
+            if (currentScrollY < 100) {
+                setIsVisible(true);
+            } 
+            // Si hace scroll hacia abajo, ocultar
+            else if (currentScrollY > lastScrollY) {
+                setIsVisible(false);
+            }
+            // Si hace scroll hacia arriba, mostrar
+            else if (currentScrollY < lastScrollY) {
+                setIsVisible(true);
+            }
+            
+            lastScrollY = currentScrollY;
+        };
+
+        window.addEventListener('scroll', handleScroll, { passive: true });
+        return () => window.removeEventListener('scroll', handleScroll);
+    }, []);
+
     return (
-        <div className={`sticky top-16 md:top-20 z-40 py-2 md:py-3 ${isDarkMode ? 'bg-[#1a1a1a] border-b border-[#D4AF37]/20' : 'bg-[#f5f5f5] border-b border-[#D4AF37]/30'}`}>
-            <div className="max-w-7xl mx-auto px-2 md:px-4 grid grid-cols-2 md:flex md:flex-wrap justify-center items-center gap-3 md:gap-6 text-[10px] md:text-xs">
-                <div className="flex items-center gap-1.5 md:gap-2">
-                    <ShieldCheck size={14} className="text-[#D4AF37] md:w-4 md:h-4" />
-                    <span className={`font-black ${isDarkMode ? 'text-white' : 'text-gray-900'}`}>Garantía 2 años</span>
-                </div>
-                <div className="hidden md:block w-px h-4 bg-[#D4AF37]/30" />
-                <div className="flex items-center gap-1.5 md:gap-2">
-                    <RotateCcw size={14} className="text-[#D4AF37] md:w-4 md:h-4" />
-                    <span className={`font-black ${isDarkMode ? 'text-white' : 'text-gray-900'}`}>Devolución 30 días</span>
-                </div>
-                <div className="hidden md:block w-px h-4 bg-[#D4AF37]/30" />
-                <div className="flex items-center gap-1.5 md:gap-2">
-                    <Truck size={14} className="text-[#D4AF37] md:w-4 md:h-4" />
-                    <span className={`font-black ${isDarkMode ? 'text-white' : 'text-gray-900'}`}>Envío Gratis Colombia</span>
-                </div>
-                <div className="hidden md:block w-px h-4 bg-[#D4AF37]/30" />
-                <div className="flex items-center gap-1.5 md:gap-2">
-                    <Award size={14} className="text-[#D4AF37] md:w-4 md:h-4" />
-                    <span className={`font-black ${isDarkMode ? 'text-white' : 'text-gray-900'}`}>100% Original</span>
+        <motion.div 
+            initial={{ y: 0 }}
+            animate={{ y: isVisible ? 0 : -100 }}
+            transition={{ duration: 0.3, ease: 'easeInOut' }}
+            className={`sticky top-20 z-40 py-3 ${isDarkMode ? 'bg-[#111111]' : 'bg-[#fafafa]'} border-b border-[#D4AF37]/10`}
+        >
+            <div className="max-w-6xl mx-auto px-6">
+                <div className="flex justify-between items-center">
+                    <div className="flex items-center gap-2.5">
+                        <ShieldCheck size={16} className="text-[#D4AF37]" />
+                        <span className={`text-[11px] font-medium tracking-wide ${isDarkMode ? 'text-gray-300' : 'text-gray-600'}`} style={{ fontFamily: 'Inter, sans-serif' }}>Garantía 2 años</span>
+                    </div>
+                    <div className="hidden sm:block w-px h-4 bg-[#D4AF37]/20" />
+                    <div className="flex items-center gap-2.5">
+                        <RotateCcw size={16} className="text-[#D4AF37]" />
+                        <span className={`text-[11px] font-medium tracking-wide ${isDarkMode ? 'text-gray-300' : 'text-gray-600'}`} style={{ fontFamily: 'Inter, sans-serif' }}>Devolución 30 días</span>
+                    </div>
+                    <div className="hidden sm:block w-px h-4 bg-[#D4AF37]/20" />
+                    <div className="flex items-center gap-2.5">
+                        <Truck size={16} className="text-[#D4AF37]" />
+                        <span className={`text-[11px] font-medium tracking-wide ${isDarkMode ? 'text-gray-300' : 'text-gray-600'}`} style={{ fontFamily: 'Inter, sans-serif' }}>Envío Gratis Colombia</span>
+                    </div>
+                    <div className="hidden sm:block w-px h-4 bg-[#D4AF37]/20" />
+                    <div className="flex items-center gap-2.5">
+                        <Award size={16} className="text-[#D4AF37]" />
+                        <span className={`text-[11px] font-medium tracking-wide ${isDarkMode ? 'text-gray-300' : 'text-gray-600'}`} style={{ fontFamily: 'Inter, sans-serif' }}>100% Original</span>
+                    </div>
                 </div>
             </div>
-        </div>
+        </motion.div>
     );
 };
 
@@ -2189,29 +2340,35 @@ function HeroSection({ navigateTo, isDarkMode }: { navigateTo: (v: string) => vo
 
             {/* Imagen de fondo full screen - Opacidad al 100% para máxima nitidez */}
             <motion.img
-                initial={{ scale: 1, opacity: 0 }}
-                animate={{ scale: 1, opacity: 1 }}
+                initial={isMobile ? { opacity: 0 } : { scale: 1, opacity: 0 }}
+                animate={isMobile ? { opacity: 1 } : { scale: 1, opacity: 1 }}
+                transition={isMobile ? { duration: 0.3 } : undefined}
                 src="/logo.png"
+                loading="eager"
                 className="absolute inset-0 w-full h-full object-cover object-center"
                 alt="JoMat Luxury Background"
             />
 
             <div className="relative z-20 text-center px-4 max-w-4xl">
-                <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 1, delay: 0.5 }}>
-                    <h2 className="text-4xl sm:text-5xl md:text-7xl font-playfair font-black mb-6 md:mb-8 leading-tight tracking-tight drop-shadow-2xl text-white px-4">
+                <motion.div 
+                    initial={isMobile ? { opacity: 0 } : { opacity: 0, y: 30 }} 
+                    animate={{ opacity: 1, y: 0 }} 
+                    transition={isMobile ? { duration: 0.3, delay: 0.2 } : { duration: 1, delay: 0.5 }}
+                >
+                    <h2 className="text-5xl md:text-7xl font-playfair font-black mb-8 leading-tight tracking-tight drop-shadow-2xl text-white">
                         La Distinción del <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#D4AF37] to-[#F7E7CE]">Tiempo</span><br />
                         y el Arte de la <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#D4AF37] to-[#F7E7CE]">Esencia</span>
                     </h2>
-                    <p className="text-base md:text-xl mb-8 md:mb-12 max-w-2xl mx-auto font-bold leading-relaxed text-white drop-shadow-lg px-4">
+                    <p className="text-base md:text-xl mb-12 max-w-2xl mx-auto font-bold leading-relaxed text-white drop-shadow-lg">
                         Bienvenido a la boutique líder en Colombia de relojería y
                         perfumería de alta gama. Descubre piezas auténticas que definen
                         tu carácter.
                     </p>
-                    <div className="flex flex-col sm:flex-row items-center justify-center gap-4 md:gap-6 mt-6 px-4 md:px-0">
-                        <motion.button whileHover={{ y: -5, scale: 1.05 }} whileTap={{ scale: 0.95 }} onClick={() => navigateTo('shop')} className="w-full sm:w-auto px-8 md:px-10 py-5 md:py-4 bg-gradient-to-r from-[#D4AF37] to-[#B4941F] text-black font-black uppercase tracking-widest text-sm md:text-xs rounded-xl md:rounded-xl hover:shadow-[0_0_30px_rgba(212,175,55,0.4)] transition-all transform shadow-lg">
+                    <div className="flex flex-col sm:flex-row items-center justify-center gap-6 mt-6">
+                        <motion.button whileHover={{ y: -5, scale: 1.05 }} whileTap={{ scale: 0.95 }} onClick={() => navigateTo('shop')} className="w-full sm:w-auto px-10 py-4 bg-gradient-to-r from-[#D4AF37] to-[#B4941F] text-black font-black uppercase tracking-widest text-xs rounded-xl hover:shadow-[0_0_30px_rgba(212,175,55,0.4)] transition-all transform">
                             Ver Catálogo
                         </motion.button>
-                        <motion.button whileHover={{ y: -5, scale: 1.05 }} whileTap={{ scale: 0.95 }} onClick={() => navigateTo('history')} className={`w-full sm:w-auto px-8 md:px-10 py-5 md:py-4 border-2 font-black uppercase tracking-widest text-sm md:text-xs rounded-xl md:rounded-xl transition-all backdrop-blur-md ${isDarkMode ? 'border-white/30 text-white hover:bg-white hover:text-black hover:border-white' : 'border-black/30 text-black hover:bg-black hover:text-white hover:border-black'}`}>
+                        <motion.button whileHover={{ y: -5, scale: 1.05 }} whileTap={{ scale: 0.95 }} onClick={() => navigateTo('history')} className={`w-full sm:w-auto px-10 py-4 border-2 font-black uppercase tracking-widest text-xs rounded-xl transition-all backdrop-blur-sm ${isDarkMode ? 'border-white/30 text-white hover:bg-white hover:text-black hover:border-white' : 'border-black/30 text-black hover:bg-black hover:text-white hover:border-black'}`}>
                             Nuestra Historia
                         </motion.button>
                     </div>
@@ -2238,6 +2395,7 @@ function BrandsBar({ isDarkMode }: { isDarkMode: boolean }) {
 function ShopPage({ products, addToCart, navigateToProduct, toggleFavorite, favorites, isDarkMode, initialFilter, formatPrice }: { products: any[], addToCart: (p: any) => void, navigateToProduct: (p: any) => void, toggleFavorite: (p: any) => void, favorites: any[], isDarkMode: boolean, initialFilter?: { category: string | null, offersOnly: boolean }, formatPrice: (p: number) => string }) {
     const [filters, setFilters] = useState({ categories: initialFilter?.category ? [initialFilter.category] : [] as string[], brands: [] as string[], occasions: [] as string[], price: 2000000, freeShipping: false, search: '' });
     const [sort, setSort] = useState('relevant');
+    const [isFilterOpen, setIsFilterOpen] = useState(false);
 
     // Sync with initialFilter changes (e.g. from Navbar)
     useEffect(() => {
@@ -2313,7 +2471,23 @@ function ShopPage({ products, addToCart, navigateToProduct, toggleFavorite, favo
                         />
                     </div>
                     <div className="flex items-center gap-4 w-full md:w-auto">
-                        <span className="text-[10px] font-black uppercase tracking-widest opacity-40 whitespace-nowrap">Ordenar por</span>
+                        {/* Botón de Filtros - Móvil */}
+                        <motion.button
+                            whileHover={{ scale: 1.05 }}
+                            whileTap={{ scale: 0.95 }}
+                            onClick={() => setIsFilterOpen(true)}
+                            className={`lg:hidden flex items-center gap-3 px-6 py-4 rounded-xl border-2 transition-all ${isDarkMode ? 'bg-[#D4AF37]/10 border-[#D4AF37]/30 text-[#D4AF37]' : 'bg-[#D4AF37]/5 border-[#D4AF37]/20 text-[#D4AF37]'}`}
+                        >
+                            <Filter size={20} />
+                            <span className="text-xs font-black uppercase">Filtros</span>
+                            {(filters.categories.length + filters.occasions.length) > 0 && (
+                                <span className="bg-[#D4AF37] text-black text-[10px] font-black px-2 py-0.5 rounded-full">
+                                    {filters.categories.length + filters.occasions.length}
+                                </span>
+                            )}
+                        </motion.button>
+                        
+                        <span className="text-[10px] font-black uppercase tracking-widest opacity-40 whitespace-nowrap hidden md:block">Ordenar por</span>
                         <select
                             value={sort}
                             onChange={(e) => setSort(e.target.value)}
@@ -2328,7 +2502,8 @@ function ShopPage({ products, addToCart, navigateToProduct, toggleFavorite, favo
             </div>
 
             <div className="flex flex-col lg:flex-row gap-12">
-                <aside className="lg:w-64 flex-shrink-0">
+                {/* Filtros Desktop - Sidebar */}
+                <aside className="hidden lg:block lg:w-64 flex-shrink-0">
                     <div className="sticky top-28 space-y-10 text-left">
                         <div className={`p-4 rounded-xl mb-6 flex items-center justify-between border ${isDarkMode ? 'bg-white/5 border-white/10' : 'bg-gray-50 border-gray-200'}`}>
                             <span className={`text-[10px] font-black uppercase ${isDarkMode ? 'text-white' : 'text-black'}`}>Envío gratis</span>
@@ -2374,7 +2549,7 @@ function ShopPage({ products, addToCart, navigateToProduct, toggleFavorite, favo
                         <span className="text-[10px] font-black uppercase opacity-60">{filteredProducts.length} Productos</span>
                     </div>
                     {filteredProducts.length > 0 ? (
-                        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+                        <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-8">
                             {filteredProducts.map(p => (<ProductCard key={p.id} product={p} addToCart={addToCart} navigateToProduct={navigateToProduct} toggleFavorite={toggleFavorite} isFavorite={favorites.some(f => f.id === p.id)} isDarkMode={isDarkMode} formatPrice={formatPrice} />))}
                         </div>
                     ) : (
@@ -2385,6 +2560,121 @@ function ShopPage({ products, addToCart, navigateToProduct, toggleFavorite, favo
                     )}
                 </div>
             </div>
+            
+            {/* Modal de Filtros Móvil */}
+            <AnimatePresence>
+                {isFilterOpen && (
+                    <>
+                        {/* Backdrop */}
+                        <motion.div
+                            initial={{ opacity: 0 }}
+                            animate={{ opacity: 1 }}
+                            exit={{ opacity: 0 }}
+                            onClick={() => setIsFilterOpen(false)}
+                            className="fixed inset-0 z-[100] bg-black/60 backdrop-blur-sm lg:hidden"
+                        />
+                        
+                        {/* Panel de Filtros */}
+                        <motion.div
+                            initial={{ y: '100%' }}
+                            animate={{ y: 0 }}
+                            exit={{ y: '100%' }}
+                            transition={{ type: 'spring', damping: 25, stiffness: 200 }}
+                            className={`fixed bottom-0 left-0 right-0 z-[101] max-h-[85vh] rounded-t-3xl lg:hidden ${isDarkMode ? 'bg-gradient-to-b from-[#0a0a0a] to-black' : 'bg-gradient-to-b from-white to-gray-50'} shadow-2xl`}
+                        >
+                            {/* Header */}
+                            <div className="px-8 py-6 border-b border-[#D4AF37]/20 flex justify-between items-center sticky top-0 bg-inherit z-10">
+                                <div>
+                                    <h3 className={`text-2xl font-playfair font-black text-[#D4AF37]`}>Filtros</h3>
+                                    <p className={`text-[9px] tracking-[0.2em] uppercase font-bold mt-1 ${isDarkMode ? 'text-gray-500' : 'text-gray-600'}`}>
+                                        {filteredProducts.length} Productos
+                                    </p>
+                                </div>
+                                <motion.button
+                                    onClick={() => setIsFilterOpen(false)}
+                                    whileHover={{ scale: 1.1 }}
+                                    whileTap={{ scale: 0.9 }}
+                                    className="w-10 h-10 rounded-full bg-[#D4AF37]/10 flex items-center justify-center"
+                                >
+                                    <X size={20} className="text-[#D4AF37]" />
+                                </motion.button>
+                            </div>
+                            
+                            {/* Contenido Scrolleable */}
+                            <div className="overflow-y-auto max-h-[calc(85vh-180px)] px-8 py-6 space-y-8">
+                                {/* Envío Gratis */}
+                                <div className={`p-4 rounded-xl flex items-center justify-between border ${isDarkMode ? 'bg-white/5 border-white/10' : 'bg-gray-50 border-gray-200'}`}>
+                                    <span className={`text-xs font-black uppercase ${isDarkMode ? 'text-white' : 'text-black'}`}>Envío gratis</span>
+                                    <button onClick={() => setFilters(f => ({ ...f, freeShipping: !f.freeShipping }))} className={`w-12 h-6 rounded-full relative transition-colors ${filters.freeShipping ? 'bg-green-500' : 'bg-gray-400'}`}>
+                                        <motion.div animate={{ x: filters.freeShipping ? 24 : 2 }} className="w-5 h-5 bg-white rounded-full absolute top-0.5" />
+                                    </button>
+                                </div>
+                                
+                                {/* Categoría */}
+                                <div>
+                                    <h4 className="text-sm font-black uppercase tracking-widest mb-4 text-[#D4AF37]">Categoría</h4>
+                                    <div className="space-y-3">
+                                        {['Relojes', 'Perfumes'].map((c: string) => (
+                                            <motion.div
+                                                key={c}
+                                                whileTap={{ scale: 0.98 }}
+                                                onClick={() => handleCategoryToggle(c)}
+                                                className={`flex items-center gap-4 p-4 rounded-xl cursor-pointer transition-all ${filters.categories.includes(c) ? 'bg-[#D4AF37]/10 border-2 border-[#D4AF37]/30' : isDarkMode ? 'bg-white/5 border-2 border-white/10' : 'bg-gray-50 border-2 border-gray-200'}`}
+                                            >
+                                                <div className={`w-5 h-5 rounded border-2 transition-all flex items-center justify-center ${filters.categories.includes(c) ? 'bg-[#D4AF37] border-[#D4AF37]' : 'border-white/20'}`}>
+                                                    {filters.categories.includes(c) && <Check size={12} className="text-black font-black" />}
+                                                </div>
+                                                <span className={`text-sm font-bold transition-colors ${filters.categories.includes(c) ? 'text-[#D4AF37]' : isDarkMode ? 'text-gray-300' : 'text-gray-700'}`}>{c}</span>
+                                            </motion.div>
+                                        ))}
+                                    </div>
+                                </div>
+                                
+                                {/* Ocasión */}
+                                <div>
+                                    <h4 className="text-sm font-black uppercase tracking-widest mb-4 text-[#D4AF37]">Ocasión</h4>
+                                    <div className="grid grid-cols-2 gap-3">
+                                        {['Gala', 'Boda', 'Negocio', 'Deportivo', 'Casual', 'Diario', 'Regalo', 'Aventura'].map((oc: string) => (
+                                            <motion.div
+                                                key={oc}
+                                                whileTap={{ scale: 0.95 }}
+                                                onClick={() => setFilters((f: any) => ({ ...f, occasions: f.occasions.includes(oc) ? f.occasions.filter((o: string) => o !== oc) : [...f.occasions, oc] }))}
+                                                className={`flex items-center gap-3 p-3 rounded-xl cursor-pointer transition-all ${filters.occasions.includes(oc) ? 'bg-[#D4AF37]/10 border-2 border-[#D4AF37]/30' : isDarkMode ? 'bg-white/5 border-2 border-white/10' : 'bg-gray-50 border-2 border-gray-200'}`}
+                                            >
+                                                <div className={`w-4 h-4 rounded border-2 transition-all flex items-center justify-center flex-shrink-0 ${filters.occasions.includes(oc) ? 'bg-[#D4AF37] border-[#D4AF37]' : 'border-white/20'}`}>
+                                                    {filters.occasions.includes(oc) && <Check size={10} className="text-black font-black" />}
+                                                </div>
+                                                <span className={`text-xs font-bold transition-colors ${filters.occasions.includes(oc) ? 'text-[#D4AF37]' : isDarkMode ? 'text-gray-400' : 'text-gray-700'}`}>{oc}</span>
+                                            </motion.div>
+                                        ))}
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            {/* Footer con Botones */}
+                            <div className="px-8 py-6 border-t border-[#D4AF37]/20 flex gap-4 sticky bottom-0 bg-inherit">
+                                <motion.button
+                                    whileTap={{ scale: 0.98 }}
+                                    onClick={() => {
+                                        setFilters({ categories: [], brands: [], occasions: [], price: 2000000, freeShipping: false, search: '' });
+                                        setIsFilterOpen(false);
+                                    }}
+                                    className={`flex-1 py-4 rounded-xl border-2 border-[#D4AF37]/30 text-[#D4AF37] font-black uppercase text-xs ${isDarkMode ? 'bg-white/5' : 'bg-gray-50'}`}
+                                >
+                                    Limpiar
+                                </motion.button>
+                                <motion.button
+                                    whileTap={{ scale: 0.98 }}
+                                    onClick={() => setIsFilterOpen(false)}
+                                    className="flex-1 py-4 rounded-xl bg-[#D4AF37] text-black font-black uppercase text-xs"
+                                >
+                                    Ver {filteredProducts.length} Productos
+                                </motion.button>
+                            </div>
+                        </motion.div>
+                    </>
+                )}
+            </AnimatePresence>
         </div>
     );
 }
@@ -2394,7 +2684,7 @@ function CatalogSection({ products, addToCart, navigateToProduct, toggleFavorite
         <section className={`py-20 ${isDarkMode ? 'bg-[#050505]' : 'bg-[#FDFDFD]'}`}>
             <div className="max-w-7xl mx-auto px-4 text-center">
                 <div className="mb-12"><h2 className="text-3xl font-playfair font-black mb-4">Obras Maestras</h2><p className="text-[#D4AF37] text-[10px] font-black uppercase tracking-[0.4em]">Lo mejor de nuestra boutique</p></div>
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">{products.slice(0, 4).map((product: any) => (<ProductCard key={product.id} product={product} addToCart={addToCart} navigateToProduct={navigateToProduct} toggleFavorite={toggleFavorite} isFavorite={favorites.some((f: any) => f.id === product.id)} isDarkMode={isDarkMode} formatPrice={formatPrice} />))}</div>
+                <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-8">{products.slice(0, 4).map((product: any) => (<ProductCard key={product.id} product={product} addToCart={addToCart} navigateToProduct={navigateToProduct} toggleFavorite={toggleFavorite} isFavorite={favorites.some((f: any) => f.id === product.id)} isDarkMode={isDarkMode} formatPrice={formatPrice} />))}</div>
                 <div className="mt-12"><motion.button whileHover={{ y: -5, scale: 1.05 }} whileTap={{ scale: 0.95 }} onClick={() => navigateTo('shop')} className="px-14 py-5 font-black uppercase tracking-widest text-xs rounded-xl bg-white text-black hover:bg-[#D4AF37] transition-all shadow-lg">Ver Catálogo Completo</motion.button></div>
             </div>
         </section>
@@ -2405,7 +2695,13 @@ function ProductCard({ product, addToCart, navigateToProduct, toggleFavorite, is
     const [isHovered, setIsHovered] = useState(false);
     const [imageError, setImageError] = useState(false);
     return (
-        <motion.div className="group relative" onMouseEnter={() => setIsHovered(true)} onMouseLeave={() => setIsHovered(false)} whileHover={{ y: -12, scale: 1.02 }} transition={{ type: "spring", stiffness: 300 }}>
+        <motion.div 
+            className="group relative" 
+            onMouseEnter={() => setIsHovered(true)} 
+            onMouseLeave={() => setIsHovered(false)} 
+            whileHover={isMobile ? {} : { y: -12, scale: 1.02 }} 
+            transition={isMobile ? {} : { type: "spring", stiffness: 300 }}
+        >
             <div className={`relative overflow-hidden rounded-[1.5rem] aspect-[4/5] border-2 transition-all duration-500 ${isDarkMode ? 'bg-[#0a0a0a] border-white/5 shadow-2xl shadow-black/50' : 'bg-white border-gray-100 shadow-xl shadow-gray-200/50'} ${isHovered ? 'border-[#D4AF37]/40' : ''}`}>
                 <div className="absolute top-3 left-3 z-20 flex flex-col gap-2">
                     {product.badge && <span className={`text-[10px] font-black uppercase px-3 py-1 rounded-lg text-white shadow-lg ${product.badgeColor || 'bg-[#D4AF37]'}`}>{product.badge}</span>}
@@ -2415,7 +2711,8 @@ function ProductCard({ product, addToCart, navigateToProduct, toggleFavorite, is
                 {!imageError ? (
                     <img 
                         src={product.image} 
-                        className={`w-full h-full object-cover transition-transform duration-1000 ${isHovered ? 'scale-110 blur-[1px]' : 'scale-100'}`}
+                        loading="lazy"
+                        className={`w-full h-full object-cover transition-transform ${isMobile ? 'duration-300' : 'duration-1000'} ${isHovered ? 'scale-110 blur-[1px]' : 'scale-100'}`}
                         alt={`${product.name} - ${product.brand}`}
                         onError={() => setImageError(true)}
                     />
@@ -2552,7 +2849,7 @@ function SolutionSection({ isDarkMode }: { isDarkMode: boolean }) {
             <div className="max-w-7xl mx-auto px-4 text-center">
                 <h2 className="text-4xl md:text-5xl font-playfair font-black mb-6 leading-tight">JoMat Luxury: <span className="text-[#D4AF37]">Tu Destino de Confianza</span></h2>
                 <p className="text-gray-500 font-medium mb-16 max-w-2xl mx-auto">La mejor experiencia de compra online para productos de lujo auténticos</p>
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
                     {[
                         { t: "100% Productos Originales", d: "Garantía de autenticidad certificada en cada producto. Trabajamos con distribuidores autorizados.", icon: <ShieldCheck size={32} /> },
                         { t: "Precios Exclusivos Online", d: "Hasta 40% de descuento vs tiendas físicas. Sin intermediarios, directo a ti.", icon: <Tag size={32} /> },
@@ -4638,7 +4935,7 @@ function CheckoutPage({ cart, total, handleWhatsAppCheckout, isDarkMode, formatP
                             {cart.map((item, idx) => (
                                 <div key={idx} className={`flex gap-4 p-3 rounded-xl ${isDarkMode ? 'bg-white/5' : 'bg-gray-50'}`}>
                                     <div className="relative w-20 h-20 rounded-lg overflow-hidden bg-white/5 flex-shrink-0">
-                                        <img src={item.image} alt={item.name} className="w-full h-full object-cover" />
+                                        <img src={item.image} loading="lazy" alt={item.name} className="w-full h-full object-cover" />
                                         <div className="absolute top-1 right-1 bg-[#D4AF37] text-black text-[10px] font-black w-5 h-5 rounded-full flex items-center justify-center">
                                             {item.qty}
                                         </div>
@@ -4831,7 +5128,7 @@ function CartSidebar({ isOpen, onClose, cart, total, updateQty, removeFromCart, 
                                 <>
                                     {cart.map((item: any) => (
                                         <div key={item.id} className="flex gap-4 p-4 bg-white/5 rounded-2xl hover:bg-white/10 transition-colors">
-                                            <img src={item.image} className="w-20 h-24 object-cover rounded-lg" alt={item.name} />
+                                            <img src={item.image} loading="lazy" className="w-20 h-24 object-cover rounded-lg" alt={item.name} />
                                             <div className="flex-1 min-w-0">
                                                 <h5 className="text-xs font-black uppercase tracking-wider mb-2 line-clamp-2">{item.name}</h5>
                                                 <p className="text-[#D4AF37] text-sm font-black mb-3">{formatPrice(item.price)}</p>
@@ -5020,24 +5317,200 @@ function CartSidebar({ isOpen, onClose, cart, total, updateQty, removeFromCart, 
 }
 
 function MobileMenu({ isOpen, onClose, navigateTo, isDarkMode }: { isOpen: boolean, onClose: () => void, navigateTo: (v: string) => void, isDarkMode: boolean }) {
+    const [expandedCategory, setExpandedCategory] = useState<string | null>(null);
+    
+    const menuStructure = [
+        { label: 'Inicio', view: 'home' },
+        { label: 'Catálogo', view: 'shop' },
+        { 
+            label: 'RELOJES', 
+            view: 'relojes',
+            submenu: [
+                { label: 'Hombre', view: 'relojes' },
+                { label: 'Mujer', view: 'relojes' },
+                { label: 'Automáticos', view: 'relojes' },
+                { label: 'Swiss Made', view: 'relojes' },
+                { label: 'Digitales', view: 'relojes' },
+                { label: 'Mini Ring', view: 'relojes' },
+                { label: 'Colecciones', view: 'relojes' },
+                { label: 'Nuevos', view: 'relojes' },
+                { label: 'Marcas Invitadas', view: 'relojes' },
+                { label: 'Ver Todos', view: 'relojes' }
+            ]
+        },
+        { label: 'Edición Especial', view: 'shop' },
+        { label: 'Accesorios', view: 'shop' },
+        { label: 'Destacados', view: 'shop' },
+        { 
+            label: 'PERFUMES', 
+            view: 'perfumes',
+            submenu: [
+                { label: 'Hombre', view: 'perfumes' },
+                { label: 'Mujer', view: 'perfumes' },
+                { label: 'Unisex', view: 'perfumes' },
+                { label: 'Nuevos', view: 'perfumes' },
+                { label: 'Ver Todos', view: 'perfumes' }
+            ]
+        },
+        { label: 'SUPER OFERTA', view: 'ofertas', isHighlight: true }
+    ];
+    
+    const toggleCategory = (label: string) => {
+        setExpandedCategory(expandedCategory === label ? null : label);
+    };
+    
     return (
         <AnimatePresence>
             {isOpen && (
-                <motion.div initial={{ x: '-100%' }} animate={{ x: 0 }} exit={{ x: '-100%' }} className={`fixed inset-0 z-[100] p-12 flex flex-col ${isDarkMode ? 'bg-black text-white' : 'bg-white text-[#111]'}`}>
-                    <div className="flex justify-between items-center mb-24"><h2 className="text-4xl font-black text-[#D4AF37] tracking-widest">JOMAT</h2><button onClick={onClose}><X size={40} className="text-[#D4AF37]" /></button></div>
-                    <div className="flex flex-col gap-10 text-5xl font-black italic">
-                        {[
-                            { label: 'Inicio', view: 'home' },
-                            { label: 'Catálogo', view: 'shop' },
-                            { label: 'Relojes', view: 'relojes' },
-                            { label: 'Perfumes', view: 'perfumes' },
-                            { label: 'Ofertas', view: 'ofertas' }
-                        ].map((item) => (
-                            <button key={item.label} onClick={() => { navigateTo(item.view); onClose(); }} className="text-left hover:text-[#D4AF37] transition-all transform hover:translate-x-8">{item.label}</button>
-                        ))}
-                    </div>
-                    <div className="mt-auto flex gap-10 text-[#D4AF37]"><Instagram size={40} /><Facebook size={40} /><Twitter size={40} /></div>
-                </motion.div>
+                <>
+                    {/* Backdrop con blur */}
+                    <motion.div 
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        exit={{ opacity: 0 }}
+                        transition={{ duration: 0.2 }}
+                        onClick={onClose}
+                        className="fixed inset-0 z-[100] bg-black/60 backdrop-blur-sm"
+                    />
+                    
+                    {/* Menu Panel */}
+                    <motion.div 
+                        initial={{ x: '-100%' }} 
+                        animate={{ x: 0 }} 
+                        exit={{ x: '-100%' }}
+                        transition={{ type: 'spring', damping: 30, stiffness: 300, mass: 0.8 }}
+                        className={`fixed inset-y-0 left-0 z-[101] w-[85%] max-w-sm flex flex-col ${isDarkMode ? 'bg-gradient-to-b from-black via-[#0a0a0a] to-black' : 'bg-gradient-to-b from-white via-gray-50 to-white'} shadow-2xl`}
+                    >
+                        {/* Header */}
+                        <div className="px-6 py-8 border-b border-[#D4AF37]/20">
+                            <div className="flex justify-between items-center">
+                                <motion.div 
+                                    initial={{ opacity: 0, x: -20 }}
+                                    animate={{ opacity: 1, x: 0 }}
+                                    transition={{ delay: 0.05, duration: 0.2 }}
+                                >
+                                    <h2 className="text-2xl font-playfair font-black text-[#D4AF37] tracking-wider">JOMAT</h2>
+                                    <p className={`text-[8px] tracking-[0.2em] uppercase font-bold mt-1 ${isDarkMode ? 'text-gray-500' : 'text-gray-600'}`}>Luxury Collection</p>
+                                </motion.div>
+                                <motion.button 
+                                    onClick={onClose}
+                                    whileHover={{ scale: 1.1, rotate: 90 }}
+                                    whileTap={{ scale: 0.9 }}
+                                    className="w-10 h-10 rounded-full bg-[#D4AF37]/10 flex items-center justify-center hover:bg-[#D4AF37]/20 transition-colors"
+                                >
+                                    <X size={20} className="text-[#D4AF37]" />
+                                </motion.button>
+                            </div>
+                        </div>
+                        
+                        {/* Menu Items */}
+                        <div className="flex-1 py-2 overflow-y-auto">
+                            <nav className="flex flex-col">
+                                {menuStructure.map((item, index) => (
+                                    <div key={item.label}>
+                                        <motion.button
+                                            initial={{ opacity: 0, x: -20 }}
+                                            animate={{ opacity: 1, x: 0 }}
+                                            transition={{ delay: 0.05 + index * 0.02, duration: 0.15 }}
+                                            onClick={() => {
+                                                if (item.submenu) {
+                                                    toggleCategory(item.label);
+                                                } else {
+                                                    navigateTo(item.view);
+                                                    onClose();
+                                                }
+                                            }}
+                                            className={`w-full flex items-center justify-between px-6 py-4 border-b transition-all ${
+                                                item.isHighlight 
+                                                    ? 'bg-red-600 text-white border-red-700 hover:bg-red-700' 
+                                                    : isDarkMode 
+                                                        ? 'border-[#D4AF37]/10 hover:bg-[#D4AF37]/5' 
+                                                        : 'border-gray-200 hover:bg-gray-50'
+                                            }`}
+                                        >
+                                            <span className={`font-black tracking-wide ${
+                                                item.isHighlight 
+                                                    ? 'text-white' 
+                                                    : isDarkMode 
+                                                        ? 'text-white' 
+                                                        : 'text-black'
+                                            }`}>
+                                                {item.label}
+                                            </span>
+                                            <motion.div
+                                                animate={{ rotate: item.submenu && expandedCategory === item.label ? 90 : 0 }}
+                                                transition={{ duration: 0.2 }}
+                                            >
+                                                <ChevronRight size={20} className={item.isHighlight ? 'text-white' : ''} />
+                                            </motion.div>
+                                        </motion.button>
+                                        
+                                        {/* Submenu expandible */}
+                                        <AnimatePresence>
+                                            {item.submenu && expandedCategory === item.label && (
+                                                <motion.div
+                                                    initial={{ height: 0, opacity: 0 }}
+                                                    animate={{ height: 'auto', opacity: 1 }}
+                                                    exit={{ height: 0, opacity: 0 }}
+                                                    transition={{ duration: 0.2 }}
+                                                    className={`overflow-hidden ${isDarkMode ? 'bg-black/40' : 'bg-gray-50'}`}
+                                                >
+                                                    <div className="py-2">
+                                                        {item.submenu.map((subitem, subindex) => (
+                                                            <motion.button
+                                                                key={`${subitem.label}-${subindex}`}
+                                                                initial={{ opacity: 0, x: -10 }}
+                                                                animate={{ opacity: 1, x: 0 }}
+                                                                transition={{ delay: subindex * 0.02 }}
+                                                                onClick={() => { navigateTo(subitem.view); onClose(); }}
+                                                                className={`w-full text-left px-12 py-3 border-b transition-all ${
+                                                                    isDarkMode 
+                                                                        ? 'text-gray-400 hover:text-white hover:bg-[#D4AF37]/5 border-[#D4AF37]/10' 
+                                                                        : 'text-gray-600 hover:text-black hover:bg-white border-gray-100'
+                                                                }`}
+                                                            >
+                                                                <span className="text-sm font-semibold">{subitem.label}</span>
+                                                            </motion.button>
+                                                        ))}
+                                                    </div>
+                                                </motion.div>
+                                            )}
+                                        </AnimatePresence>
+                                    </div>
+                                ))}
+                            </nav>
+                        </div>
+                        
+                        {/* Footer con Redes Sociales */}
+                        <motion.div 
+                            initial={{ opacity: 0, y: 20 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            transition={{ delay: 0.15, duration: 0.2 }}
+                            className="px-8 py-8 border-t border-[#D4AF37]/20"
+                        >
+                            <p className={`text-xs font-bold uppercase tracking-wider mb-4 ${isDarkMode ? 'text-gray-500' : 'text-gray-600'}`}>
+                                Síguenos
+                            </p>
+                            <div className="flex gap-4">
+                                {[
+                                    { icon: <Instagram size={24} />, label: 'Instagram' },
+                                    { icon: <Facebook size={24} />, label: 'Facebook' },
+                                    { icon: <Twitter size={24} />, label: 'Twitter' }
+                                ].map((social, index) => (
+                                    <motion.button
+                                        key={social.label}
+                                        whileHover={{ scale: 1.15, y: -3 }}
+                                        whileTap={{ scale: 0.95 }}
+                                        className="w-14 h-14 rounded-xl bg-[#D4AF37]/10 hover:bg-[#D4AF37] text-[#D4AF37] hover:text-black transition-all flex items-center justify-center shadow-lg"
+                                        aria-label={social.label}
+                                    >
+                                        {social.icon}
+                                    </motion.button>
+                                ))}
+                            </div>
+                        </motion.div>
+                    </motion.div>
+                </>
             )}
         </AnimatePresence>
     );

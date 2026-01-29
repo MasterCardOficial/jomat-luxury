@@ -175,30 +175,6 @@ export default function Footer() {
                     </div>
                 </div>
             </div>
-
-            {/* Floating WhatsApp Section (Simplified) */}
-            <div className="fixed bottom-8 right-8 z-[100] flex flex-col items-end gap-4" onMouseEnter={() => setIsHelpVisible(true)} onMouseLeave={() => setIsHelpVisible(false)}>
-                <AnimatePresence>
-                    {isHelpVisible && (
-                        <motion.div
-                            initial={{ opacity: 0, scale: 0.8, y: 20, transformOrigin: 'bottom right' }}
-                            animate={{ opacity: 1, scale: 1, y: 0 }}
-                            exit={{ opacity: 0, scale: 0.8, y: 20 }}
-                            className="bg-white rounded-[2rem] p-8 shadow-[0_20px_50px_rgba(0,0,0,0.4)] max-w-[320px] relative mb-4 border border-gray-100"
-                        >
-                            <button onClick={(e) => { e.stopPropagation(); setIsHelpVisible(false); }} className="absolute top-6 right-6 text-gray-400 hover:text-gray-600 transition-colors"><X size={20} /></button>
-                            <h3 className="text-[#1A2B3B] text-2xl font-bold mb-3 pr-8 leading-tight">¿Necesitas un Asesor?</h3>
-                            <p className="text-gray-500 text-sm leading-relaxed mb-8">Estamos disponibles ahora mismo para atenderte personalmente.</p>
-                            <a href="https://wa.me/573046661245" target="_blank" rel="noopener noreferrer" className="block w-full py-4 bg-[#25D366] text-white text-center font-bold rounded-2xl hover:bg-[#1ebd5b] transition-colors shadow-lg shadow-green-200">Iniciar Chat VIP</a>
-                        </motion.div>
-                    )}
-                </AnimatePresence>
-                <a href="https://wa.me/573046661245" target="_blank" rel="noopener noreferrer" className="p-4 bg-[#25D366] text-white rounded-full shadow-[0_10px_30px_rgba(37,211,102,0.4)] hover:bg-[#1ebd5b] hover:scale-110 transition-all duration-300 relative group flex items-center justify-center">
-                    <svg viewBox="0 0 24 24" width="32" height="32" fill="currentColor">
-                        <path d="M12.031 6.172c-3.181 0-5.767 2.586-5.768 5.766-.001 1.298.38 2.27 1.019 3.287l-.582 2.128 2.182-.573c.978.58 1.911.928 3.145.929 3.178 0 5.767-2.587 5.768-5.766.001-3.187-2.575-5.771-5.764-5.771zm3.392 8.244c-.144.405-.837.774-1.17.824-.299.045-.677.063-1.092-.069-.252-.08-.575-.187-.982-.363-1.747-.756-2.871-2.506-2.958-2.62-.087-.114-.708-.941-.708-1.797 0-.856.448-1.274.607-1.445.159-.171.347-.214.463-.214l.332.006c.106.005.249-.04.391.299l.542 1.312c.046.111.077.241.004.388-.073.148-.11.239-.217.363-.109.124-.228.277-.326.37l-.216.223c.11.201.243.402.403.593.585.696 1.242 1.157 1.961 1.439l.216-.271c.125-.156.259-.328.423-.328l.352.004c.142.006.285.011.411.066l1.205.592c.126.062.21.093.257.176.047.082.047.477-.097.882zM12 2C6.477 2 2 6.477 2 12s4.477 10 10 10 10-4.477 10-10S17.523 2 12 2zm0 18c-4.411 0-8-3.589-8-8s3.589-8 8-8 8 3.589 8 8-3.589 8-8 8z" />
-                    </svg>
-                </a>
-            </div>
         </footer>
     );
 }

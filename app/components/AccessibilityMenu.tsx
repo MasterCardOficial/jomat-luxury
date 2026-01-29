@@ -107,9 +107,21 @@ export default function AccessibilityMenu({ isGlobalDarkMode, toggleGlobalDarkMo
                 whileHover={{ scale: 1.1 }}
                 whileTap={{ scale: 0.9 }}
                 onClick={() => setIsOpen(!isOpen)}
-                className="fixed bottom-24 md:bottom-28 left-4 md:left-8 z-[60] w-12 h-12 md:w-14 md:h-14 bg-indigo-600 text-white rounded-full flex items-center justify-center shadow-2xl hover:bg-indigo-700 transition-colors"
+                className="fixed bottom-24 md:bottom-6 left-4 md:left-6 z-[60] w-12 h-12 md:w-14 md:h-14 bg-indigo-600 text-white rounded-full flex items-center justify-center shadow-2xl hover:bg-indigo-700 transition-colors group"
             >
-                {isOpen ? <X size={20} className="md:w-6 md:h-6" /> : <Accessibility size={24} className="md:w-7 md:h-7" />}
+                {isOpen ? <X size={24} /> : <Accessibility size={28} />}
+                
+                {/* Tooltip */}
+                {!isOpen && (
+                    <div className="absolute bottom-full left-0 mb-3 w-64 bg-white rounded-2xl shadow-2xl p-4 opacity-0 group-hover:opacity-100 transition-all duration-300 pointer-events-none">
+                        <h3 className="text-gray-900 font-semibold text-base mb-1">Accesibilidad</h3>
+                        <p className="text-gray-600 text-sm mb-3">Personaliza tu experiencia de navegación con opciones de accesibilidad.</p>
+                        <div className="bg-indigo-600 text-white text-center py-2 px-4 rounded-lg font-medium text-sm">
+                            Abrir Opciones
+                        </div>
+                        <span className="absolute top-full left-6 w-0 h-0 border-l-[8px] border-r-[8px] border-t-[8px] border-transparent border-t-white"></span>
+                    </div>
+                )}
             </motion.button>
 
             {/* Backdrop */}
@@ -132,7 +144,7 @@ export default function AccessibilityMenu({ isGlobalDarkMode, toggleGlobalDarkMo
                         initial={{ x: -400, opacity: 0 }}
                         animate={{ x: 0, opacity: 1 }}
                         exit={{ x: -400, opacity: 0 }}
-                        className="fixed bottom-40 md:bottom-48 left-4 md:left-8 z-[60] w-[calc(100vw-2rem)] max-w-[350px] bg-[#2a1b54] text-white rounded-2xl md:rounded-[2rem] shadow-2xl overflow-hidden border border-indigo-500/30 p-4 md:p-6 font-montserrat"
+                        className="fixed bottom-48 left-8 z-[60] w-[350px] bg-[#2a1b54] text-white rounded-[2rem] shadow-2xl overflow-hidden border border-indigo-500/30 p-6 font-montserrat"
                     >
                         <div className="flex justify-between items-center mb-6">
                             <div className="flex items-center gap-3">
